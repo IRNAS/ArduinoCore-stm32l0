@@ -222,6 +222,37 @@
               "version": "4.8.3-2014q1"
             }
           ]
+        },
+
+        {
+          "name": "IRNAS STM32L0 Boards",
+          "architecture": "stm32l0",
+          "version": "0.0.10b",
+          "category": "Contributed",
+          "url": "https://github.com/IRNAS/ArduinoCore-stm32l0/archive/0.0.10b.tar.gz",
+          "archiveFileName": "ArduinoCore-stm32l0-0.0.10b.tar.gz",
+          "checksum": "MD5:88176fd44600b159ac177a7afba8090b",
+          "size": "9758926",
+          "boards": [
+            {"name": "Grasshopper-L082CZ"},
+            {"name": "Cricket-L082CZ"},
+            {"name": "Cicada-L082CZ"},
+            {"name": "Colibri-L072Z"},
+            {"name": "IRNAS-env-module-L072Z"},
+            {"name": "Gnat-L082CZ"},
+            {"name": "B-L072Z-LRWAN1"},
+            {"name": "I-NUCLEO-LRWAN1"},
+            {"name": "P-NUCLEO-LRWAN1"},
+            {"name": "NUCLEO-L053R8"},
+            {"name": "NUCLEO-L073RZ"}
+          ],
+          "toolsDependencies": [
+            {
+              "packager": "arduino",
+              "name": "arm-none-eabi-gcc",
+              "version": "4.8.3-2014q1"
+            }
+          ]
         }
 
 
