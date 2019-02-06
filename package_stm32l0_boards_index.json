@@ -16,7 +16,7 @@
           "category": "Contributed",
           "url": "https://github.com/IRNAS/ArduinoCore-stm32l0/archive/0.0.10b.tar.gz",
           "archiveFileName": "ArduinoCore-stm32l0-0.0.10b.tar.gz",
-          "checksum": "MD5:30440f80c8b574a8255a5deea993d29d",
+          "checksum": "MD5:88176fd44600b159ac177a7afba8090b",
           "size": "9444194",
           "boards": [
             {"name": "Grasshopper-L082CZ"},
