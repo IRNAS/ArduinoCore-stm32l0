@@ -227,12 +227,12 @@
         {
           "name": "IRNAS STM32L0 Boards",
           "architecture": "stm32l0",
-          "version": "0.0.10b",
+          "version": "0.0.11",
           "category": "Contributed",
-          "url": "https://github.com/IRNAS/ArduinoCore-stm32l0/archive/0.0.10b.tar.gz",
-          "archiveFileName": "ArduinoCore-stm32l0-0.0.10b.tar.gz",
-          "checksum": "MD5:88176fd44600b159ac177a7afba8090b",
-          "size": "9758926",
+          "url": "https://github.com/IRNAS/ArduinoCore-stm32l0/archive/0.0.11.tar.gz",
+          "archiveFileName": "ArduinoCore-stm32l0-0.0.11.tar.gz",
+          "checksum": "MD5:6396a44d0ab4dc2b7dad1848138eeeae",
+          "size": "9759149",
           "boards": [
             {"name": "Grasshopper-L082CZ"},
             {"name": "Cricket-L082CZ"},
