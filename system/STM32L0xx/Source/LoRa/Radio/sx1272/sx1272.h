@@ -359,7 +359,7 @@ void SX1272StartCad( void );
  *
  * \param [IN]: freq       Channel RF frequency
  * \param [IN]: power      Sets the output power [dBm]
- * \param [IN]: time       Transmission mode timeout [ms]
+ * \param [IN]: time       Transmission mode timeout [s]
  */
 void SX1272SetTxContinuousWave( uint32_t freq, int8_t power, uint16_t time );
 

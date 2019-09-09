@@ -98,7 +98,6 @@ public:
     virtual int peek();
     virtual void purge();
 
-    void setTxContinuousWave(uint32_t freq, int8_t power, uint16_t time);
     int packetRssi();
     int packetSnr();
 
@@ -127,6 +126,7 @@ public:
     void onReceive(Callback callback);
     void onCad(void(*callback)(void));
     void onCad(Callback callback);
+    int16_t readRssi(uint32_t frequency);
 
 private:
     bool              _initialized;

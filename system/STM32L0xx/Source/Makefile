@@ -1,4 +1,4 @@
-TOOLS    = /opt/gcc-arm-none-eabi-4.8.3-2014q1
+TOOLS    = C:/Users/MarkoSagadin/Desktop/Irnas/GNU_Tools_ARM_Embedded/4.8_2014q1
 CPP      = $(TOOLS)/bin/arm-none-eabi-cpp
 CC       = $(TOOLS)/bin/arm-none-eabi-gcc
 CXX      = $(TOOLS)/bin/arm-none-eabi-g++

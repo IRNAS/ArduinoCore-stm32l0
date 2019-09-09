@@ -363,7 +363,7 @@ void SX1276StartCad( void );
  *
  * \param [IN]: freq       Channel RF frequency
  * \param [IN]: power      Sets the output power [dBm]
- * \param [IN]: time       Transmission mode timeout [ms]
+ * \param [IN]: time       Transmission mode timeout [s]
  */
 void SX1276SetTxContinuousWave( uint32_t freq, int8_t power, uint16_t time );
 
@@ -501,5 +501,13 @@ void SX1276OnDio1Irq( void );
  * \brief DIO 2 IRQ callback
  */
 void SX1276OnDio2Irq( void );
+
+/*!
+ * \brief Sets the SX1276 operating mode
+ *
+ * \param [IN] opMode New operating mode
+ */
+void SX1276SetOpMode( uint8_t opMode );
+
 
 #endif // __SX1276_H__

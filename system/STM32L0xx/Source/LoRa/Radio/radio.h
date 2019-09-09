@@ -146,7 +146,7 @@ struct Radio_s
      *
      * \retval isFree         [true: Channel is free, false: Channel is not free]
      */
-    bool    ( *IsChannelFree )( RadioModems_t modem, uint32_t freq, int16_t rssiThresh, uint32_t maxCarrierSenseTime );
+    bool ( *IsChannelFree )( RadioModems_t modem, uint32_t freq, int16_t rssiThresh, uint32_t maxCarrierSenseTime );
     /*!
      * \brief Sets the reception parameters
      *
@@ -282,7 +282,7 @@ struct Radio_s
      *
      * \param [IN]: freq       Channel RF frequency
      * \param [IN]: power      Sets the output power [dBm]
-     * \param [IN]: time       Transmission mode timeout [ms]
+     * \param [IN]: time       Transmission mode timeout [s]
      */
     void    ( *SetTxContinuousWave )( uint32_t freq, int8_t power, uint16_t time );
     /*!
@@ -410,6 +410,11 @@ struct Radio_s
      * \retval time Radio plus board wakeup time in ms.
      */
     uint32_t  ( *GetWakeupTime )( void );
+
+    void    ( *SetOpMode)( uint8_t opMode );
+
+    void    (*Delay)( uint32_t timeout );
+
 };
 
 /*!

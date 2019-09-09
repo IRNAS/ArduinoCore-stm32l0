@@ -25,6 +25,7 @@
 #include "radio.h"
 #include "sx1276-board.h"
 #include "stm32l0_rtc.h"
+#include "sx1276/sx1276.h"
 
 #if defined(STM32L072xx) || defined(STM32L082xx)
 
@@ -67,7 +68,9 @@ static const struct Radio_s SX1276Radio =
     SX1276SetBroadcastAddress,
     SX1276SetLnaBoost,
     SX1276SetIdleMode,
-    SX1276GetWakeupTime
+    SX1276GetWakeupTime,
+    SX1276SetOpMode,
+    SX1276Delay
 };
 
 #define RADIO_RESET                          STM32L0_GPIO_PIN_PC0
