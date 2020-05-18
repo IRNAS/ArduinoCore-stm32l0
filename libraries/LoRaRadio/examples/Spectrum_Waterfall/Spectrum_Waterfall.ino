@@ -1,11 +1,11 @@
 #include "LoRaRadio.h"
 
-#define START_FREQ_MHZ  868
-#define END_FREQ_MHZ    900
-#define FREQ_JUMP_MHZ   1.0f
+#define START_FREQ_MHZ  883
+#define END_FREQ_MHZ    888
+#define FREQ_JUMP_MHZ   0.05f
 #define BUF_LEN         1000
 
-int16_t buffer[BUF_LEN];
+int16_t buf[BUF_LEN];
 
 void setup( void )
 {
@@ -30,6 +30,7 @@ void loop( void )
 
     while(!received_token)
     {
+        Serial.println("READY_TOKEN");
         if (Serial.available()) 
         {      
             Serial.readBytesUntil('\n', uart_buffer, 100);
@@ -49,7 +50,7 @@ void loop( void )
     uint16_t num_points = LoRaRadio.readSpectrum(START_FREQ_MHZ, 
                                                  END_FREQ_MHZ, 
                                                  FREQ_JUMP_MHZ, 
-                                                 buffer, 
+                                                 buf, 
                                                  BUF_LEN);
     Serial.println("Spectrum done"); 
        
@@ -63,8 +64,10 @@ void loop( void )
         float freq = START_FREQ_MHZ + i * FREQ_JUMP_MHZ;
         Serial.print(freq);
         Serial.print(",");
-        Serial.println(buffer[i]); 
+        Serial.println(buf[i]); 
     }
 
     Serial.println("Print done"); 
+
+    memset(buf, 0, BUF_LEN);
 }

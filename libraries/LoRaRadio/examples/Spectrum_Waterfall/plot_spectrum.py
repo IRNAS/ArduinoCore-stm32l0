@@ -7,7 +7,7 @@ import numpy as np
 from threading import Thread
 
 #Serial stuff
-ser = serial.Serial('/dev/ttyACM0', 115200)
+ser = serial.Serial('/dev/ttyACM0', 115200, timeout=3)
 ser.flushInput()
 
 def read_serial():
@@ -35,7 +35,7 @@ def read_data():
 
     while True:
         decoded = read_serial()
-        #print(decoded)
+        print(decoded)
 
         if state == "start":
             if decoded == "Spectrum done":
@@ -43,22 +43,45 @@ def read_data():
                 #print("STATE: " + state)
 
         elif state == "read values":
-            split_line = decoded.split(",")
-            if len(split_line) == 2:
-                frequencies.append(float(split_line[0]))
-                rssi_values.append(int(split_line[1]))
-            else:
-                return frequencies, rssi_values
+            try:
+                split_line = decoded.split(",")
+                if len(split_line) == 2:
+                    frequencies.append(float(split_line[0]))
+                    rssi_values.append(int(split_line[1]))
+                else:
+                    return frequencies, rssi_values
+            except Exception as e: # work on python 3.x
+                    print('Something went wrong: '+ str(e))
+                    return 0, 0
 
 
 fig = plt.figure()
-ax = plt.axes(xlim=(868, 900), ylim=(-200, 0))
+ax = plt.axes(xlim=(883, 888), ylim=(-200, 0))
 line, = ax.plot([], [])
-
+fig_num = 0 
 while True:
+
+    while True:
+        decoded = read_serial()
+        if decoded == "READY_TOKEN":
+            break
 
     write_serial("START_TOKEN")
     frequencies, rssi_values = read_data()
-    line.set_data(frequencies, rssi_values)
+    ax.clear()
+    ax.plot(frequencies, rssi_values)
+    ax.set_xlim(883, 888)
+    ax.set_ylim(-200, 0)
+    avg_power = np.average(rssi_values) 
+    ax.set_title("Average power of specter:  {}".format(avg_power))
+    
+    if frequencies == 0:
+        continue
+
+    if avg_power > -105:
+        plt.savefig('specter{}.png'.format(fig_num))
+        fig_num += 1
+        plt.pause(2)
+
 
     plt.pause(0.1)
