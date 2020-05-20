@@ -133,6 +133,10 @@ public:
                           int16_t * buffer,
                           uint16_t buf_len);
 
+    void readSpectrumArray(float * frequencies,
+                           int16_t * rssi_values,
+                           uint16_t length);
+
 private:
     bool              _initialized;
     volatile uint8_t  _busy;      // 0 idle, 1 rx, 2 tx, 3 cad

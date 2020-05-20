@@ -1088,4 +1088,26 @@ uint16_t LoRaRadioClass::readSpectrum(uint32_t start_freq, uint32_t end_freq,
 
     return num_points;
 }
+
+
+/*!
+ * @brief                   Read rssi values from specified frequencies
+ *
+ * @param[in] frequencies   In MHz
+ * @param[in] rssi_values   
+ * @param[in] lenght        Of frequency array 
+ *
+ * @note                    Lenght of frequencies and rssi_values has to match
+ */
+void LoRaRadioClass::readSpectrumArray(float * frequencies, int16_t * rssi_values,
+                               uint16_t length)
+{
+    for(uint16_t i = 0; i < length; i++)
+    {
+        int16_t rssi = readRssi(*frequencies++ * 1000000);
+        *rssi_values++ = rssi;
+    }
+}
+
+
 LoRaRadioClass LoRaRadio;
