@@ -1055,4 +1055,37 @@ int16_t LoRaRadioClass::readRssi(uint32_t frequency)
 
     return rssi;
 }
+
+/*!
+ * @brief                   Read spectrum
+ *
+ * @param[in] start freq    In MHz
+ * @param[in] end freq      In MHz
+ * @param[in] jump freq     In MHz
+ *
+ * @return                  Number of points read, if buffer is too small
+ *                          we return 0.
+ */
+uint16_t LoRaRadioClass::readSpectrum(uint32_t start_freq, uint32_t end_freq, 
+                      float freq_jump, int16_t * buffer, uint16_t buf_len)
+{
+    uint32_t start_freq_hz = start_freq*1000000;
+    uint32_t end_freq_hz = end_freq*1000000;
+    uint32_t freq_jump_hz = freq_jump*1000000;
+
+    uint16_t num_points = (end_freq_hz - start_freq_hz)/freq_jump_hz;
+
+    if (num_points > buf_len)
+    {
+        // Not enough points available, do not scan
+        return 0;
+    }
+    for(uint16_t i = 0; i < num_points; i++)
+    {
+        int16_t rssi = readRssi(start_freq_hz + i * freq_jump_hz);
+        *buffer++ = rssi;
+    }
+
+    return num_points;
+}
 LoRaRadioClass LoRaRadio;

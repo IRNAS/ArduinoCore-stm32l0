@@ -127,6 +127,11 @@ public:
     void onCad(void(*callback)(void));
     void onCad(Callback callback);
     int16_t readRssi(uint32_t frequency);
+    uint16_t readSpectrum(uint32_t start_freq, 
+                          uint32_t end_freq, 
+                          float freq_jump,
+                          int16_t * buffer,
+                          uint16_t buf_len);
 
 private:
     bool              _initialized;
