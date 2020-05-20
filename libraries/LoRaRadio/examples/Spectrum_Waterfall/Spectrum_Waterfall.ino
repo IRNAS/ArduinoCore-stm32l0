@@ -1,15 +1,15 @@
 #include "LoRaRadio.h"
 
-#define START_FREQ_MHZ  883
-#define END_FREQ_MHZ    888
-#define FREQ_JUMP_MHZ   0.05f
+#define START_FREQ_MHZ  870
+#define END_FREQ_MHZ    892
+#define FREQ_JUMP_MHZ   0.1f
 #define BUF_LEN         1000
 
 int16_t buf[BUF_LEN];
 
 void setup( void )
 {
-    Serial.begin(115200);
+    Serial.begin(500000);
     
     while (!Serial) { }
 
@@ -21,6 +21,8 @@ void setup( void )
     LoRaRadio.setSpreadingFactor(LoRaRadio.SF_7);
     LoRaRadio.setCodingRate(LoRaRadio.CR_4_5);
     LoRaRadio.setLnaBoost(true);
+    
+    pinMode(PB6, OUTPUT);
 }
 
 void loop( void )
@@ -31,6 +33,10 @@ void loop( void )
     while(!received_token)
     {
         Serial.println("READY_TOKEN");
+        digitalWrite(PB6, HIGH);
+        delay(1);
+        digitalWrite(PB6, LOW);
+
         if (Serial.available()) 
         {      
             Serial.readBytesUntil('\n', uart_buffer, 100);
@@ -39,6 +45,11 @@ void loop( void )
             {
                 //Serial.println("Starting spectrum scan");
                 received_token = true;
+                Serial.print(START_FREQ_MHZ);
+                Serial.print(",");
+                Serial.print(END_FREQ_MHZ);
+                Serial.print(",");
+                Serial.println("0");
             }
             // Clean buffer
             memset(uart_buffer, 0, 100);
@@ -52,7 +63,7 @@ void loop( void )
                                                  FREQ_JUMP_MHZ, 
                                                  buf, 
                                                  BUF_LEN);
-    Serial.println("Spectrum done"); 
+    //Serial.println("Spectrum done"); 
        
     if(num_points == 0)
     {
@@ -67,7 +78,7 @@ void loop( void )
         Serial.println(buf[i]); 
     }
 
-    Serial.println("Print done"); 
+    Serial.println("DONE_TOKEN"); 
 
     memset(buf, 0, BUF_LEN);
 }
