@@ -8,7 +8,7 @@ from threading import Thread
 import time 
 
 #Serial stuff
-ser = serial.Serial('/dev/ttyACM0', 500000, timeout=1)
+ser = serial.Serial('COM3', 500000, timeout=1)
 ser.reset_input_buffer()
 
 def read_serial():
@@ -84,9 +84,10 @@ while True:
         continue
 
     ax.clear()
-    ax.stem(frequencies, rssi_values, bottom=-200, use_line_collection=True)
+    markerline, stemline, baseline, = ax.stem(frequencies, rssi_values, bottom=-200, use_line_collection=True)
     ax.set_ylim(-200, 0)
-
+    plt.setp(stemline, linewidth = 0.25)
+    plt.setp(markerline, markersize = 1)
     avg_power = np.average(rssi_values) 
     ax.set_title("Average power of specter:  {}".format(avg_power))
     
