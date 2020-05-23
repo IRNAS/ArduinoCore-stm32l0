@@ -6,6 +6,7 @@ import csv
 import numpy as np
 from threading import Thread
 import time 
+from datetime import datetime
 
 #Serial stuff
 ser = serial.Serial('COM3', 500000, timeout=1)
@@ -69,6 +70,9 @@ fig = plt.figure()
 ax = plt.axes(ylim=(-200, 0))
 #line, = ax.stem(1, use_line_collection=True)
 fig_num = 0 
+
+f = open("freq_log.txt", "w")
+
 while True:
 
     while True:
@@ -78,16 +82,27 @@ while True:
 
     ser.reset_input_buffer()
     write_serial("START_TOKEN")
-    time.sleep(0.01); 
+    #time.sleep(0.01); 
     frequencies, rssi_values = read_data()
     if frequencies == 0:
         continue
 
     ax.clear()
     markerline, stemline, baseline, = ax.stem(frequencies, rssi_values, bottom=-200, use_line_collection=True)
+
     ax.set_ylim(-200, 0)
     plt.setp(stemline, linewidth = 0.25)
     plt.setp(markerline, markersize = 1)
+
+    time=datetime.now(tz=None)
+    f.write(str(time))
+    f.write("\n")
+    f.write(str(frequencies))
+    f.write("\n")
+    f.write(str(rssi_values))
+    f.write("\n\n\n")
+    #f.close()
+
     avg_power = np.average(rssi_values) 
     ax.set_title("Average power of specter:  {}".format(avg_power))
     

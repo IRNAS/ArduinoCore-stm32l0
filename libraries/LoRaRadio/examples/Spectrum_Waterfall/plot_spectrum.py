@@ -8,7 +8,7 @@ from threading import Thread
 import time 
 
 #Serial stuff
-ser = serial.Serial('/dev/ttyACM0', 500000, timeout=1)
+ser = serial.Serial('COM3', 500000, timeout=1)
 ser.reset_input_buffer()
 
 def read_serial():
