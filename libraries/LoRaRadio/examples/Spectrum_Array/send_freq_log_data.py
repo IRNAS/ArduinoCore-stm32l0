@@ -88,7 +88,7 @@ if len(sys.argv)== 1:
     sys.exit(1)
 args = parser.parse_args()
 
-with open("frequencies1.txt", "r") as f:
+with open(args.file, "r") as f:
     freq = f.readline()
 
 # Frequencies is a list of strings

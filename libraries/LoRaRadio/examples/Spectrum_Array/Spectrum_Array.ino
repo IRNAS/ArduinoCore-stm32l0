@@ -20,10 +20,10 @@ void setup( void )
     LoRaRadio.setCodingRate(LoRaRadio.CR_4_5);
     LoRaRadio.setLnaBoost(true);
     
-    pinMode(PB6, OUTPUT);
-    digitalWrite(PB6, LOW);
-    pinMode(PB5, OUTPUT);
-    digitalWrite(PB5, LOW);
+    //pinMode(PB6, OUTPUT);
+    //digitalWrite(PB6, LOW);
+    //pinMode(PB5, OUTPUT);
+    //digitalWrite(PB5, LOW);
     
     char uart_buffer[100];
     bool received_token = false;
@@ -65,8 +65,6 @@ void setup( void )
         }
     }
 
-    digitalWrite(PB6, HIGH);
-
     //Serial.print("freq_count is: ");
     //Serial.println(freq_count);
     //for(int i = 0; i < freq_count; i++)
@@ -86,9 +84,9 @@ void loop( void )
     while(!received_token)
     {
         Serial.println("READY_TOKEN");
-        digitalWrite(PB6, HIGH);
+        //digitalWrite(PB6, HIGH);
         delay(1);
-        digitalWrite(PB6, LOW);
+        //digitalWrite(PB6, LOW);
 
         if (Serial.available()) 
         {      
