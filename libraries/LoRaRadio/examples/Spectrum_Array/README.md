@@ -24,11 +24,12 @@ This example contains everything that is needed to scan desired frequency range,
 7. Logged data is stored in `freq_log.txt` file.
 8. Logged data can be displayed in waterfall plot by calling `plot_data.py` script.
 
-## Example of waterfall plot
+## Examples of spectrum plot and  waterfall plot
 
-On below picuture we can see an example of spectrum scan in E-GSM 900 band.
+On below two picutures we can see an example of spectrum scan stem plot and waterfall plot in E-GSM 900 band.
 
-![example_of_watefall](example_of_waterfall.png)
+![example_of_stem](example_of_stem_plot.png)
+![example_of_watefall](example_of_waterfall_plot.png)
 ## Known problems
 
 ### Python error
