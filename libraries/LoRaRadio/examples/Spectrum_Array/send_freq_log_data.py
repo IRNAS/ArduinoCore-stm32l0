@@ -1,16 +1,14 @@
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
+import numpy as np
 import serial
 import time
 import csv
-import numpy as np
 from threading import Thread
-import time 
 from datetime import datetime
-
-#Serial stuff
-ser = serial.Serial('COM3', 500000, timeout=1)
-ser.reset_input_buffer()
+import sys
+import argparse
+from argparse import RawTextHelpFormatter
 
 def read_serial():
     '''
@@ -66,13 +64,65 @@ def read_data():
                     return 0, 0
 
 
+## Start of program
+### Command line argument parser
+
+# Intro message
+intro = "This is frequency uploader and data logging tool!\n\n"
+intro += "This tool expects in its folder the 'frequencies.txt' text file, where frequencies \nthat we wish to scan are all written in one line and separated by comma ( , ). \nFrequencies should be in MHz, for example: 880.2, 880.4, 880.6, 900.5, 895\nIn order frequencies are listed, in that order they will be scanned."
+
+parser = argparse.ArgumentParser(description=intro, formatter_class=RawTextHelpFormatter)
+parser.add_argument("--port", type=str,required=True, help="Serial port that we should listen to, something like COM3, or /dev/ttyACM0")
+
+# Display help message if no arguments are provided
+if len(sys.argv)== 1:
+    parser.print_help(sys.stderr)
+    sys.exit(1)
+args = parser.parse_args()
+
+with open("frequencies.txt", "r") as f:
+    freq = f.readline()
+
+# Frequencies is a list of strings
+frequencies = freq.split(",")
+frequencies = [float(i) for i in frequencies]
+frequencies = [str(i) for i in frequencies]
+
+# Serial stuff
+ser = serial.Serial(args.port, 115200, timeout=1)
+ser.flushInput()
+ser.flushOutput()
+
+# Prepare plot
 fig = plt.figure()
-ax = plt.axes(ylim=(-200, 0))
-#line, = ax.stem(1, use_line_collection=True)
+ax = plt.axes(ylim=(-150, -30))
 fig_num = 0 
 
-f = open("freq_log.txt", "w")
+# Send frequencies to device
+while True:
+    decoded = read_serial()
+    if decoded == "READY_TOKEN":
+        break
 
+ser.reset_input_buffer()
+
+print("Started sending frequency array")
+for i in range(len(frequencies)):
+    write_serial(frequencies[i])
+    while True:
+        decoded = read_serial()
+        if decoded == "OK":
+            break
+        elif decoded == "NOT OK":
+            i -= 1
+            break
+
+
+print("Frequency array sent, logging started")
+ser.reset_input_buffer()
+write_serial("START_TOKEN")
+
+f = open("freq_log.txt", "w")
 while True:
 
     while True:
@@ -82,7 +132,6 @@ while True:
 
     ser.reset_input_buffer()
     write_serial("START_TOKEN")
-    #time.sleep(0.01); 
     frequencies, rssi_values = read_data()
     if frequencies == 0:
         continue
@@ -101,14 +150,8 @@ while True:
     f.write("\n")
     f.write(str(rssi_values))
     f.write("\n\n\n")
-    #f.close()
 
     avg_power = np.average(rssi_values) 
     ax.set_title("Average power of specter:  {}".format(avg_power))
     
-    if avg_power > -70.5:
-        plt.savefig('specter{}.png'.format(fig_num))
-        fig_num += 1
-        plt.pause(1)
-    else:
-        plt.pause(0.03)
+    plt.pause(0.03)
