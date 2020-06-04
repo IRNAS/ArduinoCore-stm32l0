@@ -86,7 +86,7 @@ def plot_waterfall(filename):
 
 # Intro message
 intro = "This is a spectrum ploter!\n\n"
-intro += "Input data logged in txt file and you will receive spectrum image in png format"
+intro += "Input data logged in txt file and you will receive spectrum image in png format."
 parser = argparse.ArgumentParser(description=intro, formatter_class=RawTextHelpFormatter)
 parser.add_argument("--file", type=str,required=True, help="Path to file")
 

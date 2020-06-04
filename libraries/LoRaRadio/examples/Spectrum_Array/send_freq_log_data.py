@@ -69,10 +69,18 @@ def read_data():
 
 # Intro message
 intro = "This is frequency uploader and data logging tool!\n\n"
-intro += "This tool expects in its folder the 'frequencies.txt' text file, where frequencies \nthat we wish to scan are all written in one line and separated by comma ( , ). \nFrequencies should be in MHz, for example: 880.2, 880.4, 880.6, 900.5, 895\nIn order frequencies are listed, in that order they will be scanned."
+intro += "We need to provide to tool a txt file with frequencies that we wish to scan.\n"
+intro += "Frequencies that we wish to scan are all written in one line and separated by comma ( , ).\n"
+intro += "Frequencies should be in MHz, for example: 880.2, 880.4, 880.6, 900.5, 895\n"
+intro += "Frequencies will be scanned in order they are listed.\n\n"
+intro += "Results will be logged in freq_log.txt file, if we want to plot them  we need to run plot_data.py script.\n\n"
+
+intro += "Scanning can be interupted, either by closing the script or unplugging the board.\n"
+intro += "Board needs to be reset before starting the script tool."
 
 parser = argparse.ArgumentParser(description=intro, formatter_class=RawTextHelpFormatter)
-parser.add_argument("--port", type=str,required=True, help="Serial port that we should listen to, something like COM3, or /dev/ttyACM0")
+parser.add_argument("--port", type=str,required=True, help="Serial port, something like COM3, or /dev/ttyACM0")
+parser.add_argument("--file", type=str,required=True, help="Path to the file with frequencies")
 
 # Display help message if no arguments are provided
 if len(sys.argv)== 1:
@@ -80,13 +88,12 @@ if len(sys.argv)== 1:
     sys.exit(1)
 args = parser.parse_args()
 
-with open("frequencies.txt", "r") as f:
+with open("frequencies1.txt", "r") as f:
     freq = f.readline()
 
 # Frequencies is a list of strings
 frequencies = freq.split(",")
-frequencies = [float(i) for i in frequencies]
-frequencies = [str(i) for i in frequencies]
+frequencies = [x.strip(' ') for x in frequencies]
 
 # Serial stuff
 ser = serial.Serial(args.port, 115200, timeout=1)
@@ -139,7 +146,7 @@ while True:
     ax.clear()
     markerline, stemline, baseline, = ax.stem(frequencies, rssi_values, bottom=-200, use_line_collection=True)
 
-    ax.set_ylim(-200, 0)
+    ax.set_ylim(-150, -30)
     plt.setp(stemline, linewidth = 0.25)
     plt.setp(markerline, markersize = 1)
 
