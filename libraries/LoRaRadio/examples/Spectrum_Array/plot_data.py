@@ -85,10 +85,10 @@ def plot_waterfall(filename):
 ### Command line argument parser
 
 # Intro message
-intro = "This is spectrum ploter!\n\n"
-intro += "Input data logged in txt file and you will receive spectrum image in png"
+intro = "This is a spectrum ploter!\n\n"
+intro += "Input data logged in txt file and you will receive spectrum image in png format"
 parser = argparse.ArgumentParser(description=intro, formatter_class=RawTextHelpFormatter)
-parser.add_argument("--file", type=str,required=True, help="This is nav payload, make sure that is in hexadecimal form")
+parser.add_argument("--file", type=str,required=True, help="Path to file")
 
 # Display help message if no arguments are provided
 if len(sys.argv)== 1:
