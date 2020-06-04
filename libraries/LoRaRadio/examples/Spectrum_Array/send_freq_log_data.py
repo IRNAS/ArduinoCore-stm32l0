@@ -89,23 +89,46 @@ if len(sys.argv)== 1:
 args = parser.parse_args()
 
 with open(args.file, "r") as f:
-    freq = f.readline()
+    freq = f.readline().strip()
+
+print("File found!")
 
 # Frequencies is a list of strings
+if freq.endswith(','):
+    freq = freq[:-1]
+
 frequencies = freq.split(",")
 frequencies = [x.strip(' ') for x in frequencies]
+frequencies_num = [float(x) for x in frequencies]
+max_freq = str(max(frequencies_num))
+min_freq = str(min(frequencies_num))
 
 # Serial stuff
-ser = serial.Serial(args.port, 115200, timeout=1)
-ser.flushInput()
-ser.flushOutput()
+ser = serial.Serial(args.port, 500000, timeout=1)
+ser.reset_input_buffer()
+ser.reset_output_buffer()
 
 # Prepare plot
 fig = plt.figure()
 ax = plt.axes(ylim=(-150, -30))
 fig_num = 0 
 
-# Send frequencies to device
+#Needed to clean up stuff in buffer
+time.sleep(0.1)
+ser.reset_input_buffer()
+
+# First reset the board
+while True:
+    decoded = read_serial()
+    if decoded == "READY_TOKEN":
+        break
+
+write_serial("RESET")
+time.sleep(0.1)
+ser.reset_input_buffer()
+
+
+ #Send frequencies to device
 while True:
     decoded = read_serial()
     if decoded == "READY_TOKEN":
@@ -114,6 +137,12 @@ while True:
 ser.reset_input_buffer()
 
 print("Started sending frequency array")
+write_serial(max_freq)
+time.sleep(0.05)
+write_serial(min_freq)
+time.sleep(0.05)
+ser.reset_input_buffer()
+
 for i in range(len(frequencies)):
     write_serial(frequencies[i])
     while True:
@@ -124,9 +153,10 @@ for i in range(len(frequencies)):
             i -= 1
             break
 
-
 print("Frequency array sent, logging started")
+
 ser.reset_input_buffer()
+
 write_serial("START_TOKEN")
 
 f = open("freq_log.txt", "w")
@@ -159,6 +189,6 @@ while True:
     f.write("\n\n\n")
 
     avg_power = np.average(rssi_values) 
-    ax.set_title("Average power of specter:  {}".format(avg_power))
+    ax.set_title("Average power of specter:  {:.2f}".format(avg_power))
     
     plt.pause(0.03)

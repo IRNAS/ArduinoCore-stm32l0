@@ -23,10 +23,15 @@ This example contains everything that is needed to scan desired frequency range,
 6. Scan can be stopped anytime, either by unplugging the board or stopping the script.
 7. Logged data is stored in `freq_log.txt` file.
 8. Logged data can be displayed in waterfall plot by calling `plot_data.py` script.
-9. Dev board should be reset before attempting to scan again.
 
-## Troubleshooting
+## Example of waterfall plot
 
+On below picuture we can see an example of spectrum scan in E-GSM 900 band.
+
+![example_of_watefall](example_of_waterfall.png)
+## Known problems
+
+### Python error
 Sometimes the `send_freq_log_data.py` script won't startup, this mostly happens in cases when 
 the chip has been flashed. In this case you will be notified by this message:
 ```shell
@@ -39,3 +44,8 @@ UnicodeDecodeError: 'utf-8' codec can't decode byte 0xc2 in position 0: invalid 
 ```
 To fix the problem is enough to restart the script.
 
+### Plot bug
+Sometimes happens that chip misinterprets sent frequencies and saves into memory very high frequency number that should not be scanned. 
+This can be seen immediately on the plot as one frequency spot is singled out.
+Measures were taken to fix this, it happens much more seldom then before, but it can still happen. 
+Fix for this is to restart the script.
