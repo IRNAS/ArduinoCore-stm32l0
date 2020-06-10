@@ -5,3 +5,5 @@ bootloaders/*/build/
 build/
 build/*
 tags
+*.dfu
+*.elf
