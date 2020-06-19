@@ -1,10 +1,20 @@
-TOOLS    = /opt/gcc-arm-none-eabi-4.8.3-2014q1
-CPP      = $(TOOLS)/bin/arm-none-eabi-cpp
-CC       = $(TOOLS)/bin/arm-none-eabi-gcc
-CXX      = $(TOOLS)/bin/arm-none-eabi-g++
-AS       = $(TOOLS)/bin/arm-none-eabi-as
-AR       = $(TOOLS)/bin/arm-none-eabi-ar
-LD       = $(TOOLS)/bin/arm-none-eabi-ld
+# This is prefered setup.
+#TOOLS    = /opt/gcc-arm-none-eabi-4.8.3-2014q1
+#CPP      = $(TOOLS)/bin/arm-none-eabi-cpp
+#CC       = $(TOOLS)/bin/arm-none-eabi-gcc
+#CXX      = $(TOOLS)/bin/arm-none-eabi-g++
+#AS       = $(TOOLS)/bin/arm-none-eabi-as
+#AR       = $(TOOLS)/bin/arm-none-eabi-ar
+#LD       = $(TOOLS)/bin/arm-none-eabi-ld
+
+# But this also works with latest gcc installed with apt:
+# version is: gcc version 6.3.1 20170620 (15:6.3.1+svn253039-1build1) 
+CPP      = arm-none-eabi-cpp
+CC       = arm-none-eabi-gcc
+CXX      = arm-none-eabi-g++
+AS       = arm-none-eabi-as
+AR       = arm-none-eabi-ar
+LD       = arm-none-eabi-ld
 CFLAGS   = -mcpu=cortex-m0plus -mthumb -c -g -Os $(WARNINGS) -std=c99 -ffunction-sections -fdata-sections -nostdlib -MMD $(EXTRAS) $(DEFINES) $(INCLUDES)
 ASFLAGS  = -c -g -x assembler-with-cpp $(EXTRAS) $(DEFINES) $(INCLUDES)
 WARNINGS = -Wall -Wextra -Wno-unused-parameter
