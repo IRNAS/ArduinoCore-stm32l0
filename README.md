@@ -1,4 +1,15 @@
-# Arduino Core for STM32L0 based boards
+# Arduino Core for STM32L0 based boards: Single Channel and long preample branch
+
+## **IMPORTANT**
+
+This branch is setup like so that LoRaWAN (if setup on EU868 band) will transmit on one frequency with longer than usual preamble. Frequency is 868.1 MHz. 
+
+For simple demonstration setch LoRaWAN_SingleChannel.ino inside LoRaWan examples can be used.
+It important to keep in mind that sketch by itself does not do anything special. To add or remove default lora channels you have to change source files inside system/STM32L0xx/Source/LoRa/Mac/region/ for specific region, in this case RegionEU868 c and h files.
+To change preamble length parameters inside Radio.SetTxConfig inside RegionEU868TxConfig function have to changed.
+Afterwards we need to call make inside Source directory and copy created .a archive files to Lib over old ones.
+That is all.
+
 
 ## What is it ?
 

@@ -348,8 +348,8 @@ void RegionEU868InitDefaults( InitType_t type )
         {
             // Channels
             RegionChannels[0] = ( ChannelParams_t ) EU868_LC1;
-            RegionChannels[1] = ( ChannelParams_t ) EU868_LC2;
-            RegionChannels[2] = ( ChannelParams_t ) EU868_LC3;
+            //RegionChannels[1] = ( ChannelParams_t ) EU868_LC2;
+            //RegionChannels[2] = ( ChannelParams_t ) EU868_LC3;
 
             // Bands
             RegionBands[0] = ( Band_t ) EU868_BAND0;
@@ -359,7 +359,7 @@ void RegionEU868InitDefaults( InitType_t type )
             RegionBands[4] = ( Band_t ) EU868_BAND4;
 
             // Initialize the channels default mask
-            RegionChannelsDefaultMask[0] = LC( 1 ) + LC( 2 ) + LC( 3 );
+            RegionChannelsDefaultMask[0] = LC( 1 ); //+ LC( 2 ) + LC( 3 );
             // Update the channels mask
             RegionCommonChanMaskCopy( RegionChannelsMask, RegionChannelsDefaultMask, 1 );
             break;
@@ -645,7 +645,7 @@ bool RegionEU868TxConfig( TxConfigParams_t* txConfig, int8_t* txPower, TimerTime
     else
     {
         modem = MODEM_LORA;
-        Radio.SetTxConfig( modem, phyTxPower, 0, bandwidth, phyDr, 1, 8, false, true, 0, 0, false, 3000 );
+        Radio.SetTxConfig( modem, phyTxPower, 0, bandwidth, phyDr, 1, 200, false, true, 0, 0, false, 3000 );
     }
 
     // Setup maximum payload lenght of the radio driver

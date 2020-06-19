@@ -43,7 +43,7 @@
 /*!
  * Number of default channels
  */
-#define EU868_NUMB_DEFAULT_CHANNELS                 3
+#define EU868_NUMB_DEFAULT_CHANNELS                 1 //Should be 1
 
 /*!
  * Number of channels to apply for the CF list
