@@ -1,0 +1,7 @@
+{
+    "board": "TleraCorp:stm32l0:IRNAS-env-module-L072Z",
+    "configuration": "speed=32,opt=os",
+    "programmer": "AVR ISP",
+    "port": "/dev/ttyACM0",
+    "sketch": "LoRa_setTxContinuousWave_vswr.ino"
+}
