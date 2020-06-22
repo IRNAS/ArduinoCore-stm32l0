@@ -157,6 +157,8 @@ extern const stm32l0_i2c_params_t g_WireParams = {
 
 void initVariant()
 {
+    DTC_Initialize(STM32L0_GPIO_PIN_NONE, 0b0, STM32L0_GPIO_PIN_NONE, 0b0);
+
     CMWX1ZZABZ_Initialize(STM32L0_GPIO_PIN_PA12, STM32L0_GPIO_PIN_NONE);
     //CMWX1ZZABZ_Initialize(STM32L0_GPIO_PIN_PA12, STM32L0_GPIO_PIN_PA11);
 }
