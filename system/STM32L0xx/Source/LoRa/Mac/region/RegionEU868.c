@@ -347,7 +347,7 @@ void RegionEU868InitDefaults( InitType_t type )
         case INIT_TYPE_INIT:
         {
             // Channels
-            RegionChannels[0] = ( ChannelParams_t ) EU868_LC1;
+            RegionChannels[0] = ( ChannelParams_t ) EU868_LC3;
             //RegionChannels[1] = ( ChannelParams_t ) EU868_LC2;
             //RegionChannels[2] = ( ChannelParams_t ) EU868_LC3;
 
