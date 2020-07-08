@@ -15,6 +15,10 @@ const char *appSKey = "9CD0F7344C2A551882208D66E078F6C2";
 void setup( void )
 {
     Serial.begin(115200);
+    pinMode(PB2, INPUT);
+
+
+
     LoRaWAN.begin(EU868);
     LoRaWAN.setRX2Channel(869525000, 3);
 
@@ -35,7 +39,7 @@ uint8_t message_len = 8;
 onst uint8_t payload[8] = {0x0d, 0x0e, 0x0a, 0x0d, 0x0b, 0x0e, 0x0e, 0x0f, 0x0b, 0x0e, 0x0e, 0x0f};
 void loop( void )
 {
-    if (LoRaWAN.joined() && !LoRaWAN.busy())
+    if (LoRaWAN.joined() && !LoRaWAN.busy() && !digitalRead(PB2))
     {
         Serial.print("TRANSMIT( ");
         Serial.print("TimeOnAir: ");
@@ -56,6 +60,4 @@ void loop( void )
 
         LoRaWAN.sendPacket(payload, message_len);
     }
-
-    delay(10000);
 }
