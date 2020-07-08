@@ -57,5 +57,5 @@ void loop( void )
         LoRaWAN.sendPacket(payload, message_len);
     }
 
-    delay(3000);
+    delay(10000);
 }
