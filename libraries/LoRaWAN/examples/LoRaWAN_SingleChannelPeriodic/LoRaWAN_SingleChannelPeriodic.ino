@@ -8,9 +8,9 @@
 // #define REGION_KR920
 // #define REGION_US915
 
-const char *devAddr = "26011920";
-const char *nwkSKey = "0A7E92D44B3648E762F25457A0397E8E";
-const char *appSKey = "9CD0F7344C2A551882208D66E078F6C2";
+const char *devAddr = "26011DDF";
+const char *nwkSKey = "B9DC310226202ED54CB0FD2FFC71C5A9";
+const char *appSKey = "C9E3BB9E98997FE0926F963C6B784E03";
 
 void setup( void )
 {
