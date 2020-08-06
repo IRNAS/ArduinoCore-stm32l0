@@ -106,6 +106,13 @@ recipe.hooks.objcopy.postobjcopy.1.pattern="{compiler.platform.path}/{compiler.s
 recipe.output.tmp_file={build.project_name}.dfu
 recipe.output.save_file={build.project_name}.{build.variant}.dfu
 
+
+## Create output (bin file)
+recipe.objcopy.bin.pattern="{compiler.path}{compiler.elf2hex.cmd}" {compiler.elf2hex.bin.flags} {compiler.elf2hex.extra_flags} "{build.path}/{build.project_name}.elf" "{build.path}/{build.project_name}.bin"
+
+## Append DFU suffix (bin file)
+recipe.hooks.objcopy.postobjcopy.1.pattern="{compiler.platform.path}/{compiler.suffix.cmd}"  -v "{build.vid}" -p "{build.pid}" -d "{build.did}" -a "{build.path}/{build.project_name}.bin"
+
 ## Compute size
 recipe.size.pattern="{compiler.path}{compiler.size.cmd}" -A "{build.path}/{build.project_name}.elf"
 ##recipe.size.regex=^\.(?:boot|text|rodata|data)\s+([0-9]+).*
