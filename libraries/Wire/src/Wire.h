@@ -52,7 +52,7 @@ public:
 
     virtual int available(void);
     virtual int read(void);
-    virtual size_t read(uint8_t *buffer, size_t size);
+    virtual int read(uint8_t *buffer, size_t size);
     virtual int peek(void);
     virtual void flush(void);
     void onReceive(void(*)(int));
@@ -83,10 +83,6 @@ public:
     // STM32L0 EXTENSTION: suspend/resume the I2C bus
     bool suspend();
     void resume();
-
-    // STM32L0 EXTENSTION: enable/disable wakeup from STOP
-    void enableWakeup();
-    void disableWakeup();
 
   private:
     struct _stm32l0_i2c_t *_i2c;

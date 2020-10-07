@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017-2018 Thomas Roell.  All rights reserved.
+ * Copyright (c) 2017-2020 Thomas Roell.  All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to
@@ -28,6 +28,7 @@
 
 #include "Arduino.h"
 #include "wiring_private.h"
+#include "../Source/LoRa/Radio/radio.h"
 
 #define PWM_INSTANCE_TIM2      0
 #define PWM_INSTANCE_TIM22     1
@@ -108,8 +109,8 @@ static uint8_t stm32l0_usart2_rx_fifo[32];
 extern const stm32l0_uart_params_t g_Serial2Params = {
     STM32L0_UART_INSTANCE_USART2,
     STM32L0_UART_IRQ_PRIORITY,
-    STM32L0_DMA_CHANNEL_DMA1_CH5_USART2_RX,
-    STM32L0_DMA_CHANNEL_DMA1_CH4_USART2_TX,
+    STM32L0_DMA_CHANNEL_DMA1_CH6_USART2_RX,
+    STM32L0_DMA_CHANNEL_NONE,
     &stm32l0_usart2_rx_fifo[0],
     sizeof(stm32l0_usart2_rx_fifo),
     {
@@ -140,8 +141,8 @@ extern const stm32l0_uart_params_t g_Serial3Params = {
 extern const stm32l0_spi_params_t g_SPIParams = {
     STM32L0_SPI_INSTANCE_SPI2,
     STM32L0_SPI_IRQ_PRIORITY,
-    STM32L0_DMA_CHANNEL_DMA1_CH6_SPI2_RX,
-    STM32L0_DMA_CHANNEL_NONE,
+    STM32L0_DMA_CHANNEL_DMA1_CH4_SPI2_RX,
+    STM32L0_DMA_CHANNEL_DMA1_CH5_SPI2_TX,
     {
         STM32L0_GPIO_PIN_PB15_SPI2_MOSI,
         STM32L0_GPIO_PIN_PB14_SPI2_MISO,
@@ -170,6 +171,11 @@ extern const stm32l0_sdspi_params_t g_SDSPIParams = {
 extern const stm32l0_sfspi_params_t g_SFSPIParams = {
     STM32L0_GPIO_PIN_PB12,
 };
+
+void RadioInit( const RadioEvents_t *events, uint32_t freq )
+{
+    SX1276Init(events, freq);
+}
 
 void initVariant()
 {
