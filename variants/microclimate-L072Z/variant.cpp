@@ -132,6 +132,11 @@ extern const stm32l0_i2c_params_t g_WireParams = {
 };
 
 
+void RadioInit( const RadioEvents_t *events, uint32_t freq )
+{
+    SX1276Init(events, freq);
+}
+
 void initVariant()
 {
     CMWX1ZZABZ_Initialize(STM32L0_GPIO_PIN_PH1, STM32L0_GPIO_PIN_NONE);
