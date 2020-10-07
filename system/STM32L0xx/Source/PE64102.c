@@ -61,7 +61,7 @@ uint8_t DTC_set( uint8_t serial_enable, uint8_t cap_value )
     __stm32l0_gpio_pin_write( serial_enable, 1) ;
     
     //Transfer cap_value
-    stm32l0_spi_data(&spi, cap_value);
+    stm32l0_spi_data8(&spi, cap_value);
     delay_ms(1);
 
     // Set serial enable to low
@@ -96,7 +96,7 @@ void DTC_deactivate( uint8_t serial_enable )
     __stm32l0_gpio_pin_write( serial_enable, 1) ;
     
     //Transfer cap_value
-    stm32l0_spi_data(&spi, 0b00100000);
+    stm32l0_spi_data8(&spi, 0b00100000);
     delay_ms(1);
 
     // Set serial enable to low

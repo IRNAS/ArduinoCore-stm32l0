@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2019 Thomas Roell.  All rights reserved.
+ * Copyright (c) 2016-2020 Thomas Roell.  All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to
@@ -67,7 +67,10 @@ void TwoWire::begin(uint8_t address, bool generalCall)
     _ev_address = address;
 
     _option &= ~(STM32L0_I2C_OPTION_GENERAL_CALL | STM32L0_I2C_OPTION_ADDRESS_MASK | STM32L0_I2C_OPTION_MODE_MASK);
-    _option |= (address << STM32L0_I2C_OPTION_ADDRESS_SHIFT);
+
+    if (address) {
+	_option |= (STM32L0_I2C_OPTION_WAKEUP | (address << STM32L0_I2C_OPTION_ADDRESS_SHIFT));
+    }
     
     if (generalCall) {
         _option |= STM32L0_I2C_OPTION_GENERAL_CALL;
@@ -96,7 +99,7 @@ void TwoWire::setClock(uint32_t clock)
     else                     { option |= STM32L0_I2C_OPTION_MODE_100K;  }
 
     if (stm32l0_i2c_configure(_i2c, option, _timeout)) {
-	_option = option;
+        _option = option;
     }
 }
 
@@ -158,7 +161,7 @@ uint8_t TwoWire::endTransmission(bool stopBit)
     _xf_address = 0;
 
     while (transaction.status == STM32L0_I2C_STATUS_BUSY) {
-        armv6m_core_wait();
+        __WFE();
     }
 
     if (transaction.status == STM32L0_I2C_STATUS_SUCCESS) {
@@ -173,7 +176,6 @@ uint8_t TwoWire::endTransmission(bool stopBit)
 size_t TwoWire::requestFrom(uint8_t address, size_t size, bool stopBit)
 {
     stm32l0_i2c_transaction_t transaction;
-    uint8_t tx_data[3];
 
     if (__get_IPSR() != 0) {
         return 0;
@@ -215,7 +217,7 @@ size_t TwoWire::requestFrom(uint8_t address, size_t size, bool stopBit)
     _rx_write = 0;
 
     while (transaction.status == STM32L0_I2C_STATUS_BUSY) {
-        armv6m_core_wait();
+        __WFE();
     }
 
 
@@ -276,7 +278,7 @@ int TwoWire::read(void)
     return _rx_data[_rx_read++];
 }
 
-size_t TwoWire::read(uint8_t *buffer, size_t size)
+int TwoWire::read(uint8_t *buffer, size_t size)
 {
     if (size > (unsigned int)(_rx_write - _rx_read))
     {
@@ -310,7 +312,7 @@ void TwoWire::setClockLowTimeout(unsigned long timeout)
     }
 
     if (stm32l0_i2c_configure(_i2c, _option, timeout)) {
-	_timeout = timeout;
+        _timeout = timeout;
     }
 }
 
@@ -377,7 +379,7 @@ uint8_t TwoWire::transfer(uint8_t address, const uint8_t *txBuffer, size_t txSiz
     }
 
     while (transaction.status == STM32L0_I2C_STATUS_BUSY) {
-        armv6m_core_wait();
+        __WFE();
     }
 
     if (transaction.status == STM32L0_I2C_STATUS_SUCCESS) {
@@ -397,7 +399,7 @@ void TwoWire::reset()
 
     if (stm32l0_i2c_suspend(_i2c, NULL, NULL)) {
         while (_i2c->state != STM32L0_I2C_STATE_SUSPENDED) {
-            armv6m_core_wait();
+            __WFE();
         }
     }
 
@@ -445,7 +447,7 @@ uint8_t TwoWire::scan(uint8_t address)
         }
         
         while (transaction.status == STM32L0_I2C_STATUS_BUSY) {
-            armv6m_core_wait();
+            __WFE();
         }
         
         if (transaction.status == STM32L0_I2C_STATUS_SUCCESS) {
@@ -464,7 +466,7 @@ bool TwoWire::suspend()
 
     if (stm32l0_i2c_suspend(_i2c, NULL, NULL)) {
         while (_i2c->state != STM32L0_I2C_STATE_SUSPENDED) {
-            armv6m_core_wait();
+            __WFE();
         }
     }
 
@@ -478,20 +480,6 @@ void TwoWire::resume()
     }
 
     stm32l0_i2c_resume(_i2c);
-}
-
-void TwoWire::enableWakeup()
-{
-    _option |= STM32L0_I2C_OPTION_WAKEUP;
-
-    stm32l0_i2c_configure(_i2c, _option, _timeout);
-}
-
-void TwoWire::disableWakeup()
-{
-    _option &= ~STM32L0_I2C_OPTION_WAKEUP;
-
-    stm32l0_i2c_configure(_i2c, _option, _timeout);
 }
 
 void TwoWire::onReceive(void(*callback)(int))
@@ -602,10 +590,10 @@ bool TwoWireTransaction::submit(class TwoWire &wire, uint8_t address, const uint
     _callback = callback;
 
     if (!stm32l0_i2c_submit(wire._i2c, &_transaction)) {
-        return 1;
+        return false;
     }
 
-    return 0;
+    return true;
 }
 
 bool TwoWireTransaction::done()
@@ -631,7 +619,7 @@ uint8_t TwoWireTransaction::status()
 
 void TwoWireTransaction::_doneCallback(class TwoWireTransaction *self)
 {
-    self->_callback.queue();
+    self->_callback.queue(false);
 }
 
 #if WIRE_INTERFACES_COUNT > 0
