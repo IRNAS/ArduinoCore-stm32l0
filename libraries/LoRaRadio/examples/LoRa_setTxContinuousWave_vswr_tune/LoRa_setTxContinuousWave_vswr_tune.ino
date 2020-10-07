@@ -83,7 +83,7 @@ void loop( void )
     tune=tune_start;
     STM32L0.stop();
     }
-  LoRaWAN.setTxContinuousWave(freq, (uint8_t) 5, 100);
+  LoRaWAN.setTxContinuousWave(freq, (int8_t) 5, 100);
   unsigned long start_time=millis();
   unsigned long elapsed=millis()-start_time;
   float avg=0;
