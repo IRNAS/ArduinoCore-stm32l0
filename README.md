@@ -2,7 +2,7 @@
 
 ## **IMPORTANT**
 
-This branch is setup like so that LoRaWAN (if setup on EU868 band) will transmit on one frequency with longer than usual preamble. Frequency is 868.1 MHz. 
+This branch is setup like so that LoRaWAN (if setup on EU868 band) will transmit on one frequency with longer than usual preamble. Frequency is 868.5 MHz. 
 
 For simple demonstration setch LoRaWAN_SingleChannel.ino inside LoRaWan examples can be used.
 It important to keep in mind that sketch by itself does not do anything special. To add or remove default lora channels you have to change source files inside system/STM32L0xx/Source/LoRa/Mac/region/ for specific region, in this case RegionEU868 c and h files.
